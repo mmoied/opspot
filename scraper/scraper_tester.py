@@ -27,16 +27,24 @@ def select_all_sites(driver):
         driver.find_element(By.XPATH,'//*[@id="__next"]/div[1]/main/div[2]/div/div[3]/div[2]/div/div[2]/div/div[1]/div/div[2]/ul/li[1]/label').click()
         driver.find_element(By.XPATH,'//*[@id="__next"]/div[1]/main/div[2]/div/div[3]/div[2]/div/div[2]/div/div[1]/div/div/input').click()
         time.sleep(5)
-
+def remove_cookies(driver):
+    try:
+        driver.find_element(By.XPATH,"/html/body/div[4]/div[2]/div/div[1]/div/div[2]/div/button[2]").click()
+    except NoSuchElementException:
+        print("The cookies does not exist.")
+	
 def scrape_website(email,password,start_date,end_date):
     # create driver here
     options = Options()
-    options.add_argument("--headless")
+   # options.add_argument("--headless")
     width = 945
     height = 1020
     driver = webdriver.Chrome(options=options)
     driver.get("https://restaurant-hub.deliveroo.net/login")
     driver.set_window_size(width, height)
+    time.sleep(5)
+    remove_cookies(driver)
+    time.sleep(5)
     # enter login credentials here
     driver.find_element(By.XPATH, '//*[@id="__next"]/div[1]/div[1]/div/form/div[2]/label[1]/span/div/input').send_keys(
         email)
@@ -61,6 +69,8 @@ def scrape_website(email,password,start_date,end_date):
     driver.get(final_urls)
     time.sleep(5)
 
+    remove_cookies(driver)
+    time.sleep(5)
     remove_iframe(driver)
 
     if len(driver.find_element(By.XPATH,
