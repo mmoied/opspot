@@ -1,0 +1,6 @@
+Django
+requests
+pandas
+numpy
+selenium
+python-dotenv

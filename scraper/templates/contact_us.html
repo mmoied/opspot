@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+  .contact-box{
+	max-width: 100%;
+	display: grid;
+    border-radius: 10px;
+	grid-template-columns: repeat(2, 1fr);
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	background-color: #b5ccd1;
+    transition: 0.5s;
+}
+
+.contact-box:hover{
+    box-shadow: 0 0 20px 0px rgba(0,0,0,0.3);
+}
+
+
+
+.left{
+	background: url("some_image") no-repeat center; /*TODO: add some image*/
+	background-size: cover;
+	height: 100%;
+    border-radius: 10px;
+
+}
+
+.right{
+	padding: 25px 40px;
+}
+
+h2{
+	position: relative;
+	padding: 0 0 10px;
+	margin-bottom: 10px;
+}
+
+h2:after{
+	content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    height: 4px;
+    width: 50px;
+    border-radius: 2px;
+    background-color: #25a888;
+}
+
+.field{
+	width: 100%;
+	border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 3px;
+	outline: none;
+	background-color: rgba(230, 230, 230, 0.835);
+	padding: 0.5rem 1rem;
+	font-size: 1.1rem;
+	margin-bottom: 22px;
+	transition: .3s;
+}
+
+.field:hover{
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+textarea{
+	min-height: 150px;
+}
+
+.btn{
+	width: 40%;
+	padding: 0.5rem 1rem;
+	background-color: #25a888;
+    border-radius: 3px;
+	color: #fff;
+	font-size: 1.1rem;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	transition: .3s;
+}
+
+.btn:hover{
+    box-shadow: 0 0 20px 0px rgba(0,0,0,0.15);
+}
+
+.field:focus{
+    background-color: #fff;
+}
+
+@media screen and (max-width: 768px){
+	.contact-box{
+		grid-template-columns: 1fr;
+	}
+	.left{
+		height: 200px;
+	}
+}
+</style>
+<body>
+<section class="section" id="contact">
+    <form action="" name="contactForm" method="POST" onsubmit="return validateForm()">
+        {% csrf_token %}
+        <div class="contact-box">
+            <div class="left"></div>
+            <div class="right">
+                <h2>Contact me</h2>
+
+{{ STATIC_URL }}
+                <input type="text" class="field" placeholder="Your Name" name="name">
+                <input type="text" class="field" placeholder="Your Email" name="email">
+<!--                <input type="text" class="field" placeholder="Phone" name="phone">-->
+                <textarea placeholder="Message" class="field" name="message"></textarea>
+                <button class="btn">Send</button>
+            </div>
+        </div>
+    </form>
+</section>
+</body>
+
+<script>
+  function validateForm(){
+      let name = document.forms['contactForm']['name'].value;
+      let email = document.forms['contactForm']['email'].value;
+<!--      let phone = document.forms['contactForm']['phone'].value;-->
+      let message = document.forms['contactForm']['message'].value;
+
+      if (name == '' || hasNumber(name)){
+          alert('Name must be filled out and must only contain letters');
+          return false;
+      } else if (email == ''){
+          alert('Email must be filled out');
+          return false;
+      } else if (!(email.includes('@'))){
+          alert('Email does not seem to be valid');
+          return false;
+      } else if (message == ''){
+          alert('Message must be filled out');
+          return false;
+      } else {
+          // confirm or cancel
+          return confirm('Do you really want to sent the message?')
+      }
+  }
+
+  function hasNumber(myString) {
+      return /\d/.test(myString);
+  }
+</script>
+</html>
